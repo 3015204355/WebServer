@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>文件上传</title>
+ <link rel="stylesheet" type="text/css" href="css/style.css"/>
+ <link rel="shortcut icon" type="image/x-icon" href="tju.ico" />
+</head>
+
+<body>
+<p class="content">基于规则的建筑设计审查方法</p>
+<form enctype="multipart/form-data" method="post" name="fileinfo">
+  <label>备注:</label>
+  <input type="text" id="text" name="text" /><br />
+  <p>请选择上传的文件</p>
+  <input type="file" name="file" id="myfile" required /></br>
+  <input type="submit" value="上传文件" class="button"/>
+</form>
+<input type="button" value="查询已上传文件" class="button" onClick="toFileList()"/>
+<div></div>
+<script src="assets/js/jquery-1.11.0.min.js"></script>
+<script>
+//console.log(localStorage.getItem("username"));
+//console.log(localStorage.getItem("password"));
+
+				
+				
+				
+
+var form = document.forms.namedItem("fileinfo");
+
+
+form.addEventListener('submit', function(ev) {
+var myfile = document.getElementById('myfile');
+console.log(myfile.files[0].name);
+  var oOutput = document.querySelector("div"),
+      oData = new FormData(form);
+    
+  oData.append("CustomField", "This is some extra data");
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "http://127.0.0.1:9090/upload", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+      oOutput.innerHTML = "上传成功";
+	    var date = new Date();
+                var seperator1 = "-";
+                var seperator2 = ":";
+                var month = date.getMonth() + 1;
+                var strDate = date.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = date.getFullYear() + month + strDate;
+				//console.log(currentdate.toString());
+	    var comments=document.getElementById("text").value;
+	    console.log(comments);
+	  var json =
+        {
+		"filename":myfile.files[0].name,
+        "username":localStorage.getItem("username"),
+		"dataTime":currentdate.toString(),
+		"comments":comments
+        };
+	  $.ajax({
+        url:"http://127.0.0.1:9090/api/File",
+        type:"put",
+        dataType:'json',
+        data:JSON.stringify(json),
+        contentType:"application/json",
+        success:function(data){
+            window.alert("上传成功");
+              //document.location = "login.html";
+
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+		   console.log(data);
+		
+		
+                 console.log("错误");
+                // 状态码
+                console.log(XMLHttpRequest.status);
+                // 状态
+                console.log(XMLHttpRequest.readyState);
+                // 错误信息
+                console.log(textStatus);
+          // window.alert("注册成功");
+              document.location = "index.html";
+		  
+        }
+        });
+        
+	  
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+  ev.preventDefault();
+}, false);
+function toFileList()
+{
+
+document.location="FileList.html";
+}
+    
+   
+
+
+</script>
+</body>
+</html>

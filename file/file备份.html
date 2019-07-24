@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>文件上传</title>
+ <link rel="stylesheet" type="text/css" href="css/style.css"/>
+ <link rel="shortcut icon" type="image/x-icon" href="tju.ico" />
+</head>
+
+<body>
+<p class="content">基于规则的建筑设计审查方法</p>
+<form enctype="multipart/form-data" method="post" name="fileinfo">
+  <label>Email:</label>
+  <input type="email" autocomplete="on" autofocus name="userid" placeholder="email" required size="32" maxlength="64" /><br />
+  <p>请选择上传的文件</p>
+  <input type="file" name="file" id="myfile" required /></br>
+  <input type="submit" value="上传文件" class="button"/>
+</form>
+<div></div>
+<script>
+console.log(localStorage.getItem("username"));
+console.log(localStorage.getItem("password"));
+
+
+var form = document.forms.namedItem("fileinfo");
+
+form.addEventListener('submit', function(ev) {
+var myfile = document.getElementById('myfile');
+console.log(myfile.files[0].name);
+  var oOutput = document.querySelector("div"),
+      oData = new FormData(form);
+    
+  oData.append("CustomField", "This is some extra data");
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "http://127.0.0.1:9090/upload", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+      oOutput.innerHTML = "上传成功";
+	  
+	  
+	  
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+  ev.preventDefault();
+}, false);
+
+</script>
+</body>
+</html>

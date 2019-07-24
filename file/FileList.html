@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>文件上传列表</title>
+ <link rel="stylesheet" type="text/css" href="css/style.css"/>
+ <link rel="shortcut icon" type="image/x-icon" href="tju.ico" />
+</head>
+<body>
+<p class="content">基于规则的建筑设计审查方法</p>
+<table id="tab">
+<tr>
+<th>文件名称</th>
+<th>上传人员</th>
+<th>上传时间</th>
+<th>备注信息</th>
+</table>
+
+<script src="assets/js/jquery-1.11.0.min.js"></script>
+<script>
+console.log(localStorage.getItem("username"));
+console.log(localStorage.getItem("password"));
+var name=localStorage.getItem("username");
+   $.ajax({
+    type:"get",
+    url:"http://127.0.0.1:9090/File/"+name,
+    contentType:"application/json;charset=utf-8",
+	xhrFields: { withCredentials: true },
+	dataType:'json',
+    data:{},
+    success:function (data) {    
+    console.log(data);
+      var str = "";//定义用于拼接的字符串
+        for (var i = 0; i < data.length; i++) {
+            //拼接表格的行和列
+            str = "<tr><td>" + data[i].filename + "</td><td>" + data[i].username + "</td><td>"+data[i].dataTime+"</td><td>"+data[i].comments+ "</td></tr>";
+            //追加到table中
+            $("#tab").append(str);         }
+  
+    },
+    error:function () {
+        window.alert("出错");
+		
+    }
+});
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.spring.ohif.dao.FileDao">
+	<resultMap id="BaseResultMap" type="org.spring.ohif.domain.File">
+		<result column="fid" property="fid" />
+		<result column="filename" property="filename" />
+		<result column="username" property="username" />
+		<result column="dataTime" property="dataTime" />
+		<result column="comments" property="comments" />
+	</resultMap>
+
+	<parameterMap id="File" type="org.spring.ohif.domain.File"/>
+
+	<sql id="Base_Column_List">
+		fid, filename,username,dataTime,comments
+	</sql>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from file
+		where fid = #{fid}
+	</select>
+	
+	
+	<select id="findFileByFilename" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from file
+		where filename = #{filename}
+	</select>
+	
+	<select id="findFileByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from file
+		where username = #{username}
+	</select>
+
+	<select id="findAllFile" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from file
+	</select>
+
+	<insert id="saveFile" parameterMap="File" useGeneratedKeys="true" keyProperty="fid">
+		insert into
+			file(fid, filename, username,dataTime,comments)
+		values
+			(#{fid},#{filename},#{username},#{dataTime},#{comments})
+	</insert>
+
+	<update id="updateFile" parameterMap="File">
+		update
+			file
+		set
+		<if test="username!=null">
+			username = #{username},
+		</if>
+		<if test="filename!=null">
+			filename = #{filename},
+		</if>
+		<if test="dataTime!=null">
+			dataTime = #{dataTime},
+		</if>
+		<if test="comments!=null">
+			comments = #{comments}
+		</if>
+		where
+			fid = #{fid}
+	</update>
+
+	<delete id="deleteFile" parameterType="java.lang.Long">
+		delete from
+			file
+		where
+			fid = #{fid}
+	</delete>
+</mapper>

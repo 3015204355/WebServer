@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OHIF账户注册</title>
+  <meta name="author" content="Vincent Garreau" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="tju.ico" />
+</head>
+<body>
+
+<div id="particles-js">
+<p class="content">基于规则的建筑设计审查方法</p>
+		<div class="login">
+			<div class="login-top">
+				账号注册
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="img/name.png"/></div>
+				<div class="login-center-input">
+					<input id="name" type="text" name="" value="" placeholder="请输入您的用户名" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'"/>
+					<div class="login-center-input-text">用户名</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="img/password.png"/></div>
+				<div class="login-center-input">
+					<input id="password" type="text" name="" value="" placeholder="请输入您的密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的密码'"/>
+					<div class="login-center-input-text">密码</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="img/password.png"/></div>
+				<div class="login-center-input">
+					<input id="email" type="text" name="" value="" placeholder="请输入您的邮箱" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的邮箱'"/>
+					<div class="login-center-input-text">邮箱</div>
+				</div>
+			</div>
+			<div class="login-button">
+				  <button type="submit" id="commit_b" class="button" onclick="register()">立即注册</button>
+			</div>
+		</div>
+		<div class="sk-rotating-plane"></div>
+</div>
+
+<!-- scripts -->
+<script src="js/particles.min.js"></script>
+<script src="js/app.js"></script>
+<script src="assets/js/jquery-1.11.0.min.js"></script>
+<script >
+ function register()
+        {
+        var un=document.getElementById("name").value;
+        var pw=document.getElementById("password").value;
+        var email=document.getElementById("email").value;
+        add(un,pw,email);
+        };
+  function add (un,pw,email) {
+        var my_un=new String(un);
+        var my_pw=new String(pw);
+        var my_email=new String(email);
+        var json =
+        {
+        "username":my_un,
+        "password":my_pw,
+        "email":my_email
+
+        };
+       $.ajax({
+        url:"http://127.0.0.1:9090/api/Doctor",
+        type:"put",
+        dataType:'json',
+        data:JSON.stringify(json),
+        contentType:"application/json",
+        success:function(data){
+            window.alert("注册成功");
+              document.location = "login.html";
+
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+                 console.log("错误");
+                // 状态码
+                console.log(XMLHttpRequest.status);
+                // 状态
+                console.log(XMLHttpRequest.readyState);
+                // 错误信息
+                console.log(textStatus);
+           window.alert("注册成功");
+              document.location = "index.html";
+		  
+        }
+        });
+        };
+
+</script>
+</body>
+</html>

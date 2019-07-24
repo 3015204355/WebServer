@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.spring.ohif.dao.DoctorDao">
+	<resultMap id="BaseResultMap" type="org.spring.ohif.domain.Doctor">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+	</resultMap>
+
+	<parameterMap id="Doctor" type="org.spring.ohif.domain.Doctor"/>
+
+	<sql id="Base_Column_List">
+		id, username,password,email
+	</sql>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from doctor
+		where id = #{id}
+	</select>
+	<select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from doctor
+		where username = #{username}
+	</select>
+
+	<select id="findAllDoctor" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from doctor
+	</select>
+
+	<insert id="saveDoctor" parameterMap="Doctor" useGeneratedKeys="true" keyProperty="id">
+		insert into
+			doctor(id, username, password,email)
+		values
+			(#{id},#{username},#{password},#{email})
+	</insert>
+
+	<update id="updateDoctor" parameterMap="Doctor">
+		update
+			doctor
+		set
+		<if test="username!=null">
+			username = #{username},
+		</if>
+		<if test="password!=null">
+			password = #{password},
+		</if>
+		<if test="email!=null">
+			email = #{email},
+		</if>
+		
+		where
+			id = #{id}
+	</update>
+
+	<delete id="deleteDoctor" parameterType="java.lang.Long">
+		delete from
+			Doctor
+		where
+			id = #{id}
+	</delete>
+</mapper>

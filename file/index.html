@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>登录</title>
+  <meta name="author" content="Vincent Garreau" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+  <link rel="shortcut icon" type="image/x-icon" href="tju.ico" />
+</head>
+<body>
+
+<div id="particles-js">
+<p class="content">基于规则的建筑设计审查方法</p>
+		<div class="login">
+		
+			<div class="login-top">
+				登录
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="img/name.png"/></div>
+				<div class="login-center-input">
+					<input id="name" type="text" name="" value="" placeholder="请输入您的用户名" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'"/>
+					<div class="login-center-input-text">用户名</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="img/password.png"/></div>
+				<div class="login-center-input">
+					<input id="password" type="password" name=""value="" placeholder="请输入您的密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的密码'"/>
+					<div class="login-center-input-text">密码</div>
+				</div>
+			</div>
+			<div class="login-button">
+				  <button type="submit" id="commit_b" class="button" onclick="denglu()"> 登陆</button>
+				    <button type="submit" id="commit_b" class="button" onclick="ToReg()">注册</button>
+			</div>
+			
+		</div>
+		<div class="sk-rotating-plane"></div>
+</div>
+
+<!-- scripts -->
+<script src="js/particles.min.js"></script>
+<script src="js/app.js"></script>
+<script src="assets/js/jquery-1.11.0.min.js"></script>
+<script >
+	   function ToReg()
+	   {
+	   
+	   window.location.href="register.html";
+	   
+	   }
+	
+        function denglu()
+        {
+        var my_un=document.getElementById("name").value;
+        var my_pw=document.getElementById("password").value;
+		console.log("账号："+my_un);
+		console.log("密码："+my_pw);
+        find(my_un,my_pw);
+       
+        }
+		
+		function find(name,pw){
+  
+     $.ajax({
+    type:"get",
+    url:"http://127.0.0.1:9090/Doctor/"+name,
+    contentType:"application/json;charset=utf-8",
+	xhrFields: { withCredentials: true },
+	dataType:'json',
+    data:{},
+    success:function (data) {    
+
+    if(data.password==pw)
+    {
+	
+	
+        alert("登陆成功");
+
+		localStorage["username"]=name;
+		localStorage["password"]=pw;
+		console.log(localStorage.getItem("username"));
+		console.log(localStorage.getItem("password"));
+       window.location.href="file.html";
+    }
+    else
+    {
+	
+    alert("用户名或密码错误");
+    }
+    },
+    error:function () {
+        window.alert("无此用户");
+		
+    }
+});
+};
+</script>
+</body>
+</html>
